@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import axios from 'axios';
+const API_BASE = process.env.REACT_APP_API_URL; 
+
 
 // Fix for default markers in React Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -50,7 +52,7 @@ export default function ServicesPage() {
     setError('');
 
     try {
-      const response = await axios.get(`http://localhost:3001/api/providers/nearby`, {
+      const response = await axios.get(`${API_BASE}/api/providers/nearby`, {
         params: {
           serviceType: selectedService,
           lat: userLocation.lat,
