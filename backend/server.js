@@ -30,8 +30,8 @@ app.use((req, res, next) => {
 // ✅ Use cors middleware instead of manual res.header
 aapp.use(cors({
   origin: [
-    "https://service-pro-theta.vercel.app", // your Vercel frontend
-    "http://localhost:3000"                 // local dev
+    "https://service-pro-theta.vercel.app"// your Vercel frontend
+                   // local dev
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
