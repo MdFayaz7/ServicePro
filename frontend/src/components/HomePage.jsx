@@ -41,7 +41,7 @@ export default function HomePage() {
     }, 4000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [serviceImages.length]);
 
   return (
     <div className="min-h-screen">
