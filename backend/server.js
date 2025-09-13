@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   //res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   //res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 //below given cgpt
-  import cors from "cors";
+  
 
 // ✅ Use cors middleware instead of manual res.header
 app.use(cors({
