@@ -30,8 +30,8 @@ app.use((req, res, next) => {
 // ✅ Use cors middleware instead of manual res.header
 app.use(cors({
   origin: [
-    "https://service-cvkgnr0kk-mohammad-fayazs-projects-12352e52.vercel.app", // your deployed frontend URL
-    "http://localhost:3000"             // local dev React app
+    "https://service-cvkgnr0kk-mohammad-fayazs-projects-12352e52.vercel.app"// your deployed frontend URL
+  //  "http://localhost:3000"            // local dev React app
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true
@@ -98,5 +98,5 @@ if (typeof providerRoutes === 'function') {
 
 
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
