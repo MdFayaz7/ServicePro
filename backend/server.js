@@ -94,12 +94,7 @@ if (typeof providerRoutes === 'function') {
   //if (req.path.startsWith("/api")) return next();
   //res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 //});
-
-
-
 //my code
-
-//
 
 
 
