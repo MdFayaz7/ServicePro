@@ -1,7 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+
 import dotenv from 'dotenv';
+import path from "path";
+
 
 import authRoutes from './routes/auth.js';
 import serviceRoutes from './routes/services.js';
@@ -65,6 +68,17 @@ if (typeof providerRoutes === 'function') {
 } else {
   console.error('providerRoutes is not a router function');
 }
+
+//my code
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "frontend/build")));
+app.get("*", (req, res) => {
+res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
+});
+
+//my code
+
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
