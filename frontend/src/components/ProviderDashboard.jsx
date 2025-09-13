@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import axios from 'axios';
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:3001"; 
+const API_BASE = process.env.REACT_APP_API_URL; 
 //1 line cgpt
 
 // Fix for default markers in React Leaflet
