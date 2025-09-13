@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import axios from 'axios';
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:3001"; 
+//1 line cgpt
 
 // Fix for default markers in React Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -44,9 +46,16 @@ export default function ProviderDashboard() {
   const fetchProviderData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:3001/api/providers/my-profile', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      //const response = await axios.get('http://localhost:3001/api/providers/my-profile', {
+      //headers: { Authorization: `Bearer ${token}` }
+      //});
+
+       const response = await axios.get(`${API_BASE}/api/providers/my-profile`, {
+       headers: { Authorization: `Bearer ${token}` }
+       });
+       //above 3 cgpt
+     
+      
       setProvider(response.data);
     } catch (error) {
       console.error('Error fetching provider data:', error);
@@ -56,9 +65,17 @@ export default function ProviderDashboard() {
   const fetchServices = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:3001/api/services/my-services', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      //const response = await axios.get('http://localhost:3001/api/services/my-services', {
+      //  headers: { Authorization: `Bearer ${token}` }
+      //});
+
+     const response = await axios.get(`${API_BASE}/api/services/my-services`, {
+     headers: { Authorization: `Bearer ${token}` }
+     });
+
+
+
+      
       setServices(response.data);
     } catch (error) {
       console.error('Error fetching services:', error);
@@ -81,9 +98,13 @@ export default function ProviderDashboard() {
         longitude: provider.longitude
       };
       
-      await axios.post('http://localhost:3001/api/services', serviceData, {
-        headers: { Authorization: `Bearer ${token}` }
+      //await axios.post('http://localhost:3001/api/services', serviceData, {
+        //headers: { Authorization: `Bearer ${token}` }
+      //});
+      await axios.post(`${API_BASE}/api/services`, serviceData, {
+      headers: { Authorization: `Bearer ${token}` }
       });
+
       
       setMessage('Service added successfully!');
       setNewService({
