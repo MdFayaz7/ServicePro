@@ -21,9 +21,24 @@ app.use((req, res, next) => {
   console.log(`${req.method} ${req.url} - Origin: ${req.headers.origin}`);
   
   // Set CORS headers
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  //res.header('Access-Control-Allow-Origin', '*');
+  //res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  //res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+//below given cgpt
+  import cors from "cors";
+
+// ✅ Use cors middleware instead of manual res.header
+app.use(cors({
+  origin: [
+    "https://your-frontend.vercel.app", // your deployed frontend URL
+    "http://localhost:3000"             // local dev React app
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true
+}));
+
+//above
+
   
   // Handle preflight requests
   if (req.method === 'OPTIONS') {
