@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LocationPicker from "./LocatinPiker";
 import axios from "axios";
+const API_BASE = process.env.REACT_APP_API_URL; 
+
 
 export default function ProviderRegister() {
   const [formData, setFormData] = useState({
@@ -35,7 +37,7 @@ export default function ProviderRegister() {
     setMessage("");
     try {
       // First register the user
-      const userResponse = await axios.post("http://localhost:3001/api/auth/register", {
+      const userResponse = await axios.post("${API_BASE}/api/auth/register", {
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -55,7 +57,7 @@ export default function ProviderRegister() {
         mobile: formData.mobile
       };
 
-      await axios.post("http://localhost:3001/api/providers", providerData, {
+      await axios.post("${API_BASE}/api/providers", providerData, {
         headers: {
           Authorization: `Bearer ${userResponse.data.token}`
         }
