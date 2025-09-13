@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 // ✅ Use cors middleware instead of manual res.header
 app.use(cors({
   origin: [
-    "https://service-cvkgnr0kk-mohammad-fayazs-projects-12352e52.vercel.app"// your deployed frontend URL
+    "https://https://service-pro-theta.vercel.app"// your deployed frontend URL
   //  "http://localhost:3000"            // local dev React app
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
