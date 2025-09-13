@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const API_BASE = process.env.REACT_APP_API_URL; 
+
 
 export default function ProviderLogin() {
   const [formData, setFormData] = useState({
@@ -24,7 +26,7 @@ export default function ProviderLogin() {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/login', formData);
+      const response = await axios.post('${API_BASE}/api/auth/login', formData);
       const { token, user } = response.data;
       
       // Store token in localStorage
