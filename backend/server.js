@@ -13,14 +13,13 @@ const app = express();
 
 const allowedOrigins = [
   "https://service-pro-theta.vercel.app" // Vercel production
-  // "http://localhost:3000" // Uncomment for local development if needed
+  // "http://localhost:3000" // Uncomment to allow local dev origin if needed
 ];
 
-// CORS middleware - top-level
+// CORS middleware - top-level, handles preflight automatically
 app.use(cors({
   origin: function (origin, callback) {
-    // allow requests with no origin (like curl or Postman)
-    if (!origin) return callback(null, true);
+    if (!origin) return callback(null, true); // Allow server-to-server or curl/postman requests with no origin
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
@@ -30,8 +29,6 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"]
 }));
-app.options(cors());
-
 
 // Logging middleware - separate
 app.use((req, res, next) => {
@@ -41,7 +38,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-// Test route
+// Test route to verify server running and CORS working
 app.get('/test', (req, res) => {
   res.json({ message: 'Server is working!' });
 });
@@ -49,7 +46,7 @@ app.get('/test', (req, res) => {
 // Connect MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // Debug logs to verify imports
 console.log('authRoutes:', authRoutes);
@@ -62,20 +59,18 @@ if (typeof authRoutes === 'function') {
 } else {
   console.error('authRoutes is not a router function');
 }
-
 if (typeof serviceRoutes === 'function') {
   app.use('/api/services', serviceRoutes);
 } else {
   console.error('serviceRoutes is not a router function');
 }
-
 if (typeof providerRoutes === 'function') {
   app.use('/api/providers', providerRoutes);
 } else {
   console.error('providerRoutes is not a router function');
 }
 
-// Serve React build (uncomment and adjust if needed)
+// Serve React build (optional, uncomment and adjust if using frontend static build)
 // const __dirname = path.resolve();
 // app.use(express.static(path.join(__dirname, "../frontend/build")));
 // app.use((req, res, next) => {
