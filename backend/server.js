@@ -1,13 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-
 import dotenv from 'dotenv';
 import path from "path";
-//const __dirname = path.resolve();
-
-
-
 import authRoutes from './routes/auth.js';
 import serviceRoutes from './routes/services.js';
 import providerRoutes from './routes/providers.js';
@@ -16,26 +11,15 @@ dotenv.config();
 
 const app = express();
 
-// Simple CORS configuration
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url} - Origin: ${req.headers.origin}`);
-  
-  // Set CORS headers
-  //res.header('Access-Control-Allow-Origin', '*');
-  //res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  //res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-//below given cgpt
-  
-
-// ✅ Use cors middleware instead of manual res.header
 const allowedOrigins = [
   "https://service-pro-theta.vercel.app" // Vercel production
-  //"http://localhost:3000"                 // Local development
+  // "http://localhost:3000" // Uncomment for local development if needed
 ];
 
+// CORS middleware - top-level
 app.use(cors({
   origin: function (origin, callback) {
-    // allow requests with no origin (like curl, mobile apps)
+    // allow requests with no origin (like curl or Postman)
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
@@ -46,16 +30,10 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"]
 }));
-//above
 
-  
-  // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    console.log('Handling OPTIONS preflight request');
-    res.status(200).end();
-    return;
-  }
-  
+// Logging middleware - separate
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url} - Origin: ${req.headers.origin}`);
   next();
 });
 
@@ -66,17 +44,17 @@ app.get('/test', (req, res) => {
   res.json({ message: 'Server is working!' });
 });
 
-// MongoDB connection
+// Connect MongoDB
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("MongoDB connected"))
-.catch((err) => console.log(err));
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log(err));
 
-// Debug logs to verify each imported router
+// Debug logs to verify imports
 console.log('authRoutes:', authRoutes);
 console.log('serviceRoutes:', serviceRoutes);
 console.log('providerRoutes:', providerRoutes);
 
-// Safety checks before mounting routes
+// Mount routes only if imported routers are functions
 if (typeof authRoutes === 'function') {
   app.use('/api/auth', authRoutes);
 } else {
@@ -95,17 +73,16 @@ if (typeof providerRoutes === 'function') {
   console.error('providerRoutes is not a router function');
 }
 
-//my code
-// Serve React build
+// Serve React build (uncomment and adjust if needed)
+// const __dirname = path.resolve();
+// app.use(express.static(path.join(__dirname, "../frontend/build")));
+// app.use((req, res, next) => {
+//   if (req.path.startsWith("/api")) return next();
+//   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+// });
 
-//app.use(express.static(path.join(__dirname, "../frontend/build")));
-//app.use((req, res, next) => {
-  //if (req.path.startsWith("/api")) return next();
-  //res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-//});
-//my code
+const PORT = process.env.PORT || 5000;
 
-
-
-const PORT = process.env.PORT;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
