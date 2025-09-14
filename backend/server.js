@@ -28,16 +28,24 @@ app.use((req, res, next) => {
   
 
 // ✅ Use cors middleware instead of manual res.header
-app.use(cors({
-  origin: [
-    "https://service-pro-theta.vercel.app"// your Vercel frontend
-                   // local dev
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
-  credentials: true
-}));
+const allowedOrigins = [
+  "https://service-pro-theta.vercel.app" // Vercel production
+  //"http://localhost:3000"                 // Local development
+];
 
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow requests with no origin (like curl, mobile apps)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"), false);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"]
+}));
 //above
 
   
